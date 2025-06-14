@@ -1,0 +1,1 @@
+# quantum-amplitude-damping-channel
