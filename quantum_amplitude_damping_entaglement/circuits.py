@@ -2,8 +2,7 @@ from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter, ParameterVector
 from typing import Union, List
 import numpy as np
-import utils
-from utils import Utils
+from .utils import Utils
 # ==============================
 #   BASE AMPLITUDE DAMPING
 # ==============================
@@ -38,7 +37,16 @@ class BaseAmplitudeDampingCircuit(QuantumCircuit):
 # ==============================
 class AmplitudeDampingConvenzioneClassica(BaseAmplitudeDampingCircuit):
     """
-    Convenzione "classica": qubit 0 = sistema, qubit 1 = ambiente.
+    Restituisce un gate personalizzato che rappresenta
+    l'implementazione unitaria del canale amplitude damping
+    su due qubit (sistema e ambiente) nella convenzione classica.
+
+    Parametri:
+        _noise (float or Parameter): valore tra 0 e 1 che viene convertito in angolo per la rotazione Ry
+            ! se non viene istanziato allora di default è Parameter('η')
+
+    Restituisce:
+        QuantumCircuit: un gate "AmpDamp" personalizzato da applicare a 2 qubit
     """
     def __init__(self, eta: Union[float, Parameter, None] = None):
         super().__init__(eta, name="AD_Classico")

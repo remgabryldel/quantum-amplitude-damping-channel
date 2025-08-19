@@ -77,7 +77,15 @@ class Utils:
     @staticmethod
     def reverse_qargs_density_matrix(rho):
         """
-        Inverte l'ordine dei qubit (little-endian vs big-endian)
-        in una matrice densità.
+        Inverte l'ordine dei qubit (little-endian vs big-endian) in una matrice densità.
+
+        Questo è utile quando si vuole cambiare l'ordinamento dei qubit nel prodotto tensore,
+        ad esempio passando da |q0⟩ ⊗ |q1⟩ a |q1⟩ ⊗ |q0⟩.
+
+        Parametri:
+            rho (DensityMatrix): matrice densità di input (multi-qubit)
+
+        Restituisce:
+            DensityMatrix: matrice densità con ordine dei qubit invertito
         """
         return DensityMatrix(rho.to_operator().reverse_qargs().to_matrix())
