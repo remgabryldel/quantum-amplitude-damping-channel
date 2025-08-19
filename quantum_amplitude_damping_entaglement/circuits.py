@@ -2,8 +2,8 @@ from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter, ParameterVector
 from typing import Union, List
 import numpy as np
-
-
+import utils
+from utils import Utils
 # ==============================
 #   BASE AMPLITUDE DAMPING
 # ==============================
@@ -25,20 +25,12 @@ class BaseAmplitudeDampingCircuit(QuantumCircuit):
     @staticmethod
     def noise_to_theta(noise: Union[float, Parameter]):
         """Converte parametro di rumore η in angolo θ"""
-        if isinstance(noise, Parameter):
-            return 2 * (noise ** 0.5).arcsin()
-        elif isinstance(noise, (int, float)) and 0 <= noise <= 1:
-            return 2 * np.arcsin(np.sqrt(noise))
-        raise ValueError("Parametro η non valido (deve essere in [0,1], un Parameter, o None).")
+        return Utils.TwoAsinSqrt(noise)
 
     @staticmethod
     def theta_to_noise(theta):
         """Converte angolo θ in parametro di rumore η"""
-        if not isinstance(theta, Parameter):
-            if theta is not None:
-                return np.square(np.sin(theta / 2))
-        else:
-            return (theta / 2).sin() ** 2
+        return Utils.SquareSinHalf(theta)
 
 
 # ==============================
