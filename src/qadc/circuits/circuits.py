@@ -2,7 +2,7 @@ from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter, ParameterVector
 from typing import Union, List
 import numpy as np
-from .utils import Utils
+from qadc.utils import Utils
 # ==============================
 #   BASE AMPLITUDE DAMPING
 # ==============================
@@ -75,36 +75,37 @@ class AmplitudeDampingConvenzioneQiskit(BaseAmplitudeDampingCircuit):
 #   ENCODING
 # ==============================
 class EncodingCircuit(QuantumCircuit):
-    def __init__(self, num_params: int = 2):
+    def __init__(self, param: Union[float, Parameter, None] = None):
         """
         Circuito di encoding parametrico su un qubit: RY(θ[0]) → RZ(θ[1])
         """
-        if num_params != 2:
+        if not(param is None) and len(param) != 2:
             raise ValueError("EncodingCircuit richiede esattamente 2 parametri.")
 
-        self.params_vector = ParameterVector("θ_enc", num_params)
+        if param is None:
+            param = ParameterVector("θ_de", 2)
 
         super().__init__(1, name="EncodingCircuit")
-        self.ry(self.params_vector[0], 0)
-        self.rz(self.params_vector[1], 0)
+        self.ry(param[0], 0)
+        self.rz(param[1], 0)
 
 
 # ==============================
 #   DECODING
 # ==============================
 class DecodingCircuit(QuantumCircuit):
-    def __init__(self, num_params: int = 2):
+    def __init__(self, param: Union[float, Parameter, None] = None):
         """
         Circuito di decodifica parametrico su un qubit: RZ(θ[0]) → RY(θ[1])
         """
-        if num_params != 2:
+        if not(param is None) and len(param) != 2:
             raise ValueError("DecodingCircuit richiede esattamente 2 parametri.")
-
-        self.params_vector = ParameterVector("θ_dec", num_params)
+        if param is None:
+            param = ParameterVector("θ_de", 2)
 
         super().__init__(1, name="DecodingCircuit")
-        self.rz(self.params_vector[0], 0)
-        self.ry(self.params_vector[1], 0)
+        self.rz(param[0], 0)
+        self.ry(param[1], 0)
 
 # ==============================
 #   ANCILLA INITIALIZATION
@@ -145,3 +146,5 @@ class AncillaInitializationCircuit(QuantumCircuit):
         self.cx(1, 0)      # entanglement ancilla → sistema
 
         # Nota: ora q0 = sistema, q1 = ambiente, q2 = ancilla
+
+    

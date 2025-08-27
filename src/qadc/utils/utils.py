@@ -89,3 +89,38 @@ class Utils:
             DensityMatrix: matrice densità con ordine dei qubit invertito
         """
         return DensityMatrix(rho.to_operator().reverse_qargs().to_matrix())
+    
+    # -----------------------------------------------------------------
+    # create a initial state density matrix of 2 qubit (Density Matrix)
+    # -----------------------------------------------------------------
+    @staticmethod
+    def initial_mixed_state_real_density_matrix(_alpha):
+        """
+        Crea una matrice densità a 2 qubit come stato iniziale, in cui:
+        - Il qubit di sistema (qubit 0 S_1) è in uno stato misto reale parametrizzato da alpha:
+            ρ_sis = (1 - α)|0⟩⟨0| + α|1⟩⟨1|
+        - Il qubit di ambiente (qubit 1 E_1) è inizializzato nello stato puro |0⟩⟨0|
+        - L'output è il prodotto tensore ρ_sis ⊗ ρ_env, rappresentato come oggetto DensityMatrix
+
+        Parametri:
+            _alpha (float): parametro di mescolanza ∈ [0, 1]; 
+
+        Restituisce:
+            DensityMatrix: stato iniziale a 2 qubit (sistema + ambiente)
+        """
+        # Parametro di mescolanza
+        alpha = _alpha
+
+        #creo una matrice in forma array[array[,...],...]
+        rho_sis_matrix = [[1 - alpha, 0],[0, alpha]]
+        
+        # Creo lo stato misto da rho_0_matrix per qubit 0
+        rho_sis = DensityMatrix(rho_sis_matrix)
+
+        # creo lo stao del qubit 1 (ambiente) in |0>
+        rho_env = DensityMatrix.from_label('0')
+
+        # Stato iniziale totale a 2 qubit
+        rho_in = rho_sis.tensor(rho_env)
+
+        return rho_in
