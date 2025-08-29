@@ -12,3 +12,4 @@ src/qadc/simulators/__init__.py
 src/qadc/simulators/simulator.py
 src/qadc/utils/__init__.py
 src/qadc/utils/utils.py
+test/test_simulator.py

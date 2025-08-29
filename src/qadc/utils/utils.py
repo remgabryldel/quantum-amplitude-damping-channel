@@ -53,10 +53,12 @@ class Utils:
         if not isinstance(x, Parameter):
             if 0 <= x <= 1:
                 return 2 * np.arcsin(np.sqrt(x))
+            else: 
+                raise ValueError("Parametro non valido: deve appartenere a [0,1] o essere un Parameter")
         else:
             if x is not None:
                 return 2 * (x ** 0.5).arcsin()
-        raise ValueError("Parametro x non valido: deve appartenere a [0,1] o essere un Parameter")
+        raise ValueError("Parametro non può essere None: deve appartenere a [0,1] o essere un Parameter")
 
     @staticmethod
     def SquareSinHalf(x):
@@ -110,6 +112,8 @@ class Utils:
         """
         # Parametro di mescolanza
         alpha = _alpha
+        if not (0 <= _alpha <= 1):
+            raise ValueError("Valore non valido di alpha")
 
         #creo una matrice in forma array[array[,...],...]
         rho_sis_matrix = [[1 - alpha, 0],[0, alpha]]
