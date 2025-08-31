@@ -50,15 +50,22 @@ class Utils:
         Applica la funzione di 2*arcsin(Sqrt(x)) a x.
         Supporta numeri e Qiskit Parameter.
         """
+    @staticmethod
+    def TwoAsinSqrt(x):
+        """
+        Applica la funzione di 2*arcsin(sqrt(x)) a x.
+        Supporta numeri, Parameter e None (simbolico).
+        """
+        if x is None:
+            return Parameter("θ")   # o direttamente un simbolo generico
+    
         if not isinstance(x, Parameter):
             if 0 <= x <= 1:
                 return 2 * np.arcsin(np.sqrt(x))
-            else: 
-                raise ValueError("Parametro non valido: deve appartenere a [0,1] o essere un Parameter")
+            else:
+                raise ValueError("Parametro x fuori dall'intervallo [0,1]")
         else:
-            if x is not None:
-                return 2 * (x ** 0.5).arcsin()
-        raise ValueError("Parametro non può essere None: deve appartenere a [0,1] o essere un Parameter")
+            return 2 * (x ** 0.5).arcsin()
 
     @staticmethod
     def SquareSinHalf(x):

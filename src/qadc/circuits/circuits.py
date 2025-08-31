@@ -197,7 +197,7 @@ Nota:
         # Nota: ora q0 = sistema, q1 = ambiente, q2 = ancilla
 
     @staticmethod
-    def alpha_to_alpha(alpha: Union[float, Parameter]):
+    def alpha_to_theta(alpha: Union[float, Parameter]):
         """Converte parametro di alpha α di miscelanza appartenente all'intervallo [0,1] in angolo θ che appartiene ai numeri reali"""
         return Utils.TwoAsinSqrt(alpha)
 
