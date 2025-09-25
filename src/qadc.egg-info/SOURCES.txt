@@ -12,4 +12,7 @@ src/qadc/simulators/__init__.py
 src/qadc/simulators/simulator.py
 src/qadc/utils/__init__.py
 src/qadc/utils/utils.py
+test/test_checking_project_circuits.py
+test/test_circuits.py
 test/test_simulator.py
+test/test_utils.py
