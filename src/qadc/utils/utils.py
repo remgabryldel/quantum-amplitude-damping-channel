@@ -21,14 +21,30 @@ class Utils:
     # --------------------------
     @staticmethod
     def cost_function(counts: list) -> float:
-        counts = [Utils.normalize_counts(c) for c in counts]
-        totals = [c['0'] + c['1'] for c in counts]
-        all_totals = sum(totals)
+        """
+        counts: lista di dizionari {esito: conteggi}
+                es. [{"0": 900, "1": 100}, {"0": 200, "1": 800}, {"2": 50}]
+        Ritorna: 1- somma_per_ogni_chiave_k(max_valore_della_chiave_k_su_tutti_gli_elementi(counts)/somma_totale_numero_esperimenti) 
+        """
+        if not counts:
+            return {}
 
-        f_of_0_counts_norm = [c['0'] / all_totals for c in counts]
-        f_of_1_counts_norm = [c['1'] / all_totals for c in counts]
+        # Unione di tutte le chiavi presenti
+        keys = set().union(*(d.keys() for d in counts))
+        #print(keys)
+        # Somma totale di tutti i conteggi
+        all_totals = sum(sum(d.values()) for d in counts)
+        if all_totals == 0:
+            return {k: 0.0 for k in keys}
+        # print(all_totals)
+        # Max della frequenza normalizzata sul totale globale
+        max_freq = {
+            k: max(d.get(k, 0) / all_totals for d in counts)
+            for k in keys
+        }
+        return 1-sum(max_freq.values())
 
-        return 1 - (np.max(f_of_0_counts_norm) + np.max(f_of_1_counts_norm))
+        
 
     # --------------------------
     # Merge di dizionari
