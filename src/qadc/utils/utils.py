@@ -63,12 +63,6 @@ class Utils:
     @staticmethod
     def TwoAsinSqrt(x):
         """
-        Applica la funzione di 2*arcsin(Sqrt(x)) a x.
-        Supporta numeri e Qiskit Parameter.
-        """
-    @staticmethod
-    def TwoAsinSqrt(x):
-        """
         Applica la funzione di 2*arcsin(sqrt(x)) a x.
         Supporta numeri, Parameter e None (simbolico).
         """

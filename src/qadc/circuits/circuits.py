@@ -1,5 +1,5 @@
 from qiskit import QuantumCircuit
-from qiskit.circuit import Parameter, ParameterVector
+from qiskit.circuit import Parameter, ParameterVector,ParameterExpression
 from typing import Union, List
 import numpy as np
 from qadc.utils import Utils
@@ -14,13 +14,19 @@ class BaseAmplitudeDampingCircuit(QuantumCircuit):
     def __init__(self, eta: Union[float, Parameter, None], name="BaseAmpDamp"):
         super().__init__(2, name=name)  # 2 qubit: sistema + ambiente
 
-        # Se eta=None → parametro simbolico η
+        # Se eta=None → parametro simbolico θ
         if eta is None:
-            eta = Parameter("η")
+            eta = Parameter("θ")
 
         self.eta = eta
         #self.theta = self.noise_to_theta(eta)
 
+    #  # Conversioni PROTETTE (istanza, override-abili nelle sottoclassi se serve)
+    # def _noise_to_theta(self, noise: Union[float, ParameterExpression]) -> ParameterExpression:
+    #     return Utils.TwoAsinSqrt(noise)
+
+    # def _theta_to_noise(self, theta: Union[float, ParameterExpression]) -> ParameterExpression:
+    #     return Utils.SquareSinHalf(theta)
     @staticmethod
     def noise_to_theta(noise: Union[float, Parameter]):
         """Converte parametro di rumore η appartenente all'intervallo [0,1] in angolo θ che appartiene ai numeri reali"""
@@ -30,7 +36,14 @@ class BaseAmplitudeDampingCircuit(QuantumCircuit):
     def theta_to_noise(theta: Union[float, Parameter]):
         """Converte angolo θ che appartiene ai numeri reali in parametro di rumore ηappartenente all'intervallo [0,1]"""
         return Utils.SquareSinHalf(theta)
+    # Accessor in sola lettura
+    # @property
+    # def eta_param(self) -> Parameter:
+    #     return self._eta
 
+    # # Helper PROTETTO: aggiorna η e restituisce self (chainable)
+    # def _set_eta(self, eta_expr: Union[float, Parameter, ParameterExpression]) -> "BaseAmplitudeDampingCircuit":
+    #     self.assign_parameters({self._eta: eta_expr}, inplace=True)
 
 # ==============================
 #   CLASSICO
@@ -67,6 +80,25 @@ class AmplitudeDampingConvenzioneClassica(BaseAmplitudeDampingCircuit):
         # Costruisco il circuito
         self.cry(self.eta, 1, 0)  # Ry su ambiente
         self.cx(0, 1)               # CX: sistema → ambiente
+    # def noise_to_theta(self, eta_new: Union[float, Parameter, None]) -> "AmplitudeDampingConvenzioneClassica":
+    #     """
+    #     Aggiorna direttamente η (numerico o simbolico).
+    #     Poiché i gate dipendono da η, non serve ricostruire nulla.
+    #     """
+    #     if eta_new == None:
+    #         eta_new = self.eta
+    #     self._set_eta(self._noise_to_theta(eta_new))
+    #     return self
+
+    # def theta_to_noise(self, theta_new: Union[float, Parameter, None]) -> "AmplitudeDampingConvenzioneClassica":
+    #     """
+    #     Metodo PUBBLICO: converte θ→η usando il metodo PROTETTO della base
+    #     e aggiorna direttamente η.
+    #     """
+    #     if theta_new == None:
+    #         theta_new = self.eta
+    #     self._set_eta(self._theta_to_noise(theta_new))
+    #     return self
 
 
 # ==============================
