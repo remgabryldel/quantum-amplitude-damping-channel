@@ -10,35 +10,25 @@ Student: Remigiusz Gabryl Della Rosa
 
 In this repository there will be the documentation and quantum experiments implemented on IBM Qiskit tool.
 
-<!-- ## How to get started
+ ## How to get started
+* follow the official documentation on site https://quantum.cloud.ibm.com/docs/en/guides/install-qiskit
 
 * Install Python requirements
 
 ```sh
 pip install -r requirements.txt
-pip install -r requirements-dev.txt
 ```
 
-* Install Qiskit latest version
+Should have installed the lastest version of all library required, furthermore should have installed the qadc library.
+You can check it trying to run the firts cell of q_a_d notebooks
+
+* If you want impove the experiment with real data from real backend, you must create a file .env, and it should have two global variable
 
 ```sh
-pip install qiskit
+IBM_TOKEN= your_token
+INSTANCE= your_instance
 ```
-
-* Check Qiskit Version
-
-```sh
-python basic-setup/qiskit-test.py
-```
-
-Should output at least these versions of Qiskit:
-
-```json
-{'qiskit-terra': '0.16.1', 'qiskit-aer': '0.7.2', 'qiskit-ignis': '0.5.1', 'qiskit-ibmq-provider': '0.11.1', 'qiskit-aqua': '0.8.1', 'qiskit': '0.23.2'}
-```
-
-* Open `gettingStarted` notebook and run all cells to check that your system is working
-
-* You should already have an IBM Quantum Experience account. You can create one following these steps [Create an IBM Quantum Experience account](https://qiskit.org/documentation/install.html).
-
-* Once created, check that you can retrieve your account on a given notebook. Open `load-ibm-provider` notebook and run the cells to check that you can load your account successfully and select a Quantum backend. -->
+  
+* For future
+It must refactor the all library qadc beacouse it need improve the static methods of class AmplitudeDampingConvenzioneClassica and AmplitudeDampingConvenzioneQiskit. In particular, it need to be implement more likely at the implement the interface Gate.
+After this refactor, it need change the notebooks where use this classes.
